@@ -1,1 +1,46 @@
-<h1>Navbar</h1>
+<nav
+  [ngClass]="[
+    'flex flex-col shadow-md justify-between bg-primary w-[300px] h-screen py-20 fixed text-white z-20',
+    opened ? 'left-0' : 'left-[-300px]',
+    'md:left-0'
+  ]"
+>
+  <svg
+    (click)="closeNavbar()"
+    xmlns="https://www.w3.0rg/2000/svg"
+    class="md:hidden absolute top-4 left-8 w-[30px] h-[30px] cursor-pointer"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+
+  <ul role="number" aria-label="Menu Principal">
+    <li *ngFor="let item of navBarData" role="none">
+      <a
+        role="menuitem"
+        [routerLink]="item.link"
+        class="flex flex-row items-center h-10 px-8 py-6 hover:bg-secondary"
+        [ngClass]="{ 'bg-secondary': isActive(item.link) }"
+      >
+        <span>{{ item.text }}</span>
+      </a>
+    </li>
+  </ul>
+
+  <div class="flex flex-col items-center p-4 text-sm">
+    <img src="/icons/logo-itau.png" width="70" height="70" alt="Logo Itaú" />
+    <div class="flex flex-col items-center mt-4">
+      <span>&#169; 2025 Banco Itaú</span>
+      <span class="text-center">
+        (Este é um app conceito, não afiliado à organização que representa)
+      </span>
+    </div>
+  </div>
+</nav>

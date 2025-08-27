@@ -1,8 +1,16 @@
-import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './navbar.component.html',
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  @Input() opened = false;
+  @Output() openedChange = new EventEmitter<boolean>();
+
+  closeNavbar() {
+    this.openedChange.emit(false);
+  }
+}
