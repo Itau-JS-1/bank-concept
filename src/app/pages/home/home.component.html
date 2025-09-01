@@ -1,1 +1,45 @@
-<h1>Home</h1>
+<div class="flex flex-row w-full xl:max-w-[calc(50%-60px)]">
+  <div class="flex flex-col flex-1 p-6 pt-10 h-full">
+    <div class="flex flex-col items-start justify-start mb-20">
+      <h1 class="text-3xl font-bold">Olá Mateus!</h1>
+      <span class="max-w-[320px] text-bold">
+        Bem-vindo de volta. Aqui está uma visão geral da sua conta.
+      </span>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold mb-4">Cartão de crédito</h2>
+      <div class="flex flex-row flex-wrap gap-x-10 gap-y-5 items-center w-full">
+        <app-credit-card
+          name="Mateus Queirós"
+          logo="/icons/logo-itau.png"
+          brand="icons/mastercard.svg"
+        />
+        <div class="max-w-[200px]">
+          <div class="flex flex-row items-center">
+            <i-tabler name="user-circle" class="text-2xl mr-2 text-primary" />
+            <h3 class="text-xl font-bold ml-2">Info</h3>
+          </div>
+          <div class="text-sm">
+            Seu vencimento é no dia
+            <span class="font-bold">22/04/2025</span>
+          </div>
+          <!-- Botão aqui -->
+        </div>
+      </div>
+      <div class="flex flex-row gap-5 xs:gap-10 mt-10">
+        <!-- Botão -->
+      </div>
+    </div>
+    <div class="block mt-10 xl:hidden">
+      <!-- Home Info Section -->
+    </div>
+    <div class="mt-10">
+      <!-- Transactions List -->
+    </div>
+  </div>
+  <div
+    class="bg-constrast fixed w-[20%] xl:w-[calc(50%-100px)] right-0 flex-1 h-screen py-10 px-20 hidden xl:block"
+  >
+    <!-- Home Info Section -->
+  </div>
+</div>

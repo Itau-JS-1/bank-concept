@@ -1,0 +1,37 @@
+<div
+  class="bg-primary text-white p-4 rounded-lg relative min-w-[300px] z-0"
+  [attr.ariaLabel]="'Cartão de crédito ' + name"
+>
+  <div class="absolute top-6 right-6">
+    <img
+      width="50"
+      height="50"
+      [src]="brand"
+      [alt]="'Bandeira do cartão ' + name"
+      style="width: 50px; height: 50px"
+    />
+  </div>
+
+  <div class="mt-12">
+    <div class="flex flex-row mb-2" aria-hidden="true">
+      <i-tabler
+        name="device-sd-card"
+        class="rotate-90"
+        fill="'#CCC'"
+        size="40"
+      ></i-tabler>
+      <i-tabler name="wifi-2" class="rotate-90" size="40"></i-tabler>
+    </div>
+
+    <div class="flex flex-row items-center">
+      <img
+        [src]="logo"
+        width="40"
+        height="40"
+        [alt]="'Logo do banco ' + name"
+        style="width: 40px; height: 40px"
+      />
+      <span class="ml-4 text-base font-medium">{{ name }}</span>
+    </div>
+  </div>
+</div>

@@ -7,4 +7,6 @@ import { NavbarComponent } from '../navbar/navbar.component';
   imports: [NavbarComponent, HeaderComponent],
   templateUrl: './navigation.component.html',
 })
-export class NavigationComponent {}
+export class NavigationComponent {
+  navbarOpen = false;
+}
