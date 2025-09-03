@@ -3,10 +3,16 @@ import { provideTablerIcons, TablerIconComponent } from 'angular-tabler-icons';
 import { IconArrowRight, IconUserCircle } from 'angular-tabler-icons/icons';
 import { ButtonComponent } from '../../shared/button/button.component';
 import { CreditCardComponent } from '../../shared/credit-card/credit-card.component';
+import { HomeInfoSectionComponent } from './home-info-section/home-info-section.component';
 
 @Component({
   selector: 'app-home',
-  imports: [TablerIconComponent, CreditCardComponent, ButtonComponent],
+  imports: [
+    TablerIconComponent,
+    CreditCardComponent,
+    ButtonComponent,
+    HomeInfoSectionComponent,
+  ],
   templateUrl: './home.component.html',
   providers: [
     provideTablerIcons({

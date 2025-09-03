@@ -27,6 +27,7 @@
             <i-tabler name="arrow-right" class="text-primary rotate-45" />
           </ng-template>
           <app-button
+            variant="subtle"
             tooltip="Saiba mais"
             class="mt-2 min-w-0 w-fit"
             [rightSection]="rightSectionArrowButton"
@@ -35,11 +36,12 @@
         </div>
       </div>
       <div class="flex flex-row gap-5 xs:gap-10 mt-10">
-        <!-- Botão -->
+        <app-button tooltip="Pagar fatura">Pagar fatura</app-button>
       </div>
     </div>
     <div class="block mt-10 xl:hidden">
       <!-- Home Info Section -->
+      <app-home-info-section />
     </div>
     <div class="mt-10">
       <!-- Transactions List -->
@@ -49,5 +51,6 @@
     class="bg-constrast fixed w-[20%] xl:w-[calc(50%-100px)] right-0 flex-1 h-screen py-10 px-20 hidden xl:block"
   >
     <!-- Home Info Section -->
+    <app-home-info-section />
   </div>
 </div>

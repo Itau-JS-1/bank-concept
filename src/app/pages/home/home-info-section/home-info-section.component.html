@@ -1,0 +1,30 @@
+<div class="flex flex-row items-center justify-between gap-3">
+  <input
+    class="input w-full border-2 border-primary text-primary rounded-full placeholder:text-primary"
+    placeholder="Pode perguntar"
+  />
+  <select class="select !w-20 h-2" [(ngModel)]="activeSelectData">
+    @for (item of selectData; track item.name) {
+      <option [value]="item.value">
+        {{ item.name }}
+      </option>
+    }
+  </select>
+</div>
+
+<div class="flex flex-row items-center flex-wrap justify-between gap-5 mt-10">
+  <app-tabs
+    class="w-full"
+    [items]="tabData"
+    [active]="activeTab"
+    (activeChange)="activeTab = $event"
+  ></app-tabs>
+</div>
+
+<div class="w-full mt-4">
+  @if (activeTab === "expenses") {
+    <!--
+    <app-expenses-tab />
+    -->
+  }
+</div>

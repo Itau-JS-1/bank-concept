@@ -15,7 +15,7 @@
 @switch (variant()) {
   @case ("default") {
     <button
-      [attr.aria-label]="ariaLabel || tooltip()"
+      [attr.aria-label]="ariaLabel() || tooltip()"
       [attr.data-tip]="tooltip() || null"
       [attr.aria-describedby]="tooltip() ? 'tooltip-id' : null"
       [ngClass]="[
@@ -33,7 +33,7 @@
           <ng-container *ngTemplateOutlet="leftSection()" />
         </span>
       }
-      <ng-container *ngTemplateOutlet="content" />
+      <ng-content />
       @if (rightSection?.()) {
         <span class="ml-2">
           <ng-container *ngTemplateOutlet="rightSection()" />
@@ -42,7 +42,34 @@
     </button>
   }
   @case ("subtle") {
-    <button>Subtle</button>
+    <div [ngClass]="tooltip()">
+      <button
+        [attr.aria-label]="ariaLabel() || tooltip()"
+        [attr.data-tip]="tooltip() || null"
+        [attr.aria-describedby]="tooltip() ? 'tooltip-id' : null"
+        [ngClass]="[
+          'cursor-pointer btn py-2 px-5 h-fit min-h-11 rounded-full shadow-none border-none',
+          'text-primary bg-transparent hover:bg-primary hover:text-white',
+          className(),
+          tooltip(),
+        ]"
+      >
+        @if (tooltip?.()) {
+          <span id="tooltip-id" hidden>{{ tooltip() }}</span>
+        }
+        @if (leftSection?.()) {
+          <span class="mr-2">
+            <ng-container *ngTemplateOutlet="leftSection()" />
+          </span>
+        }
+        <ng-content />
+        @if (rightSection?.()) {
+          <span class="ml-2">
+            <ng-container *ngTemplateOutlet="rightSection()" />
+          </span>
+        }
+      </button>
+    </div>
   }
 }
 

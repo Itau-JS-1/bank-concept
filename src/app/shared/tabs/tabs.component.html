@@ -1,0 +1,20 @@
+<div
+  class="flex flex-row items-center justify-between text-primary min-w-[340px] w-full"
+>
+  @for (tab of items(); track tab.text) {
+    <button
+      class="flex flex-col items-center font-medium w-fit"
+      (click)="setActive(tab.value)"
+    >
+      <div
+        [ngClass]="{
+          'cursor-pointer relative w-fit after:w-3/4 after:bg-primary after:content-[\'\'] after:absolute after:translate-x-1/2 after:right-1/2 after:bottom-[-2px]': true,
+          'after:h-0.5': active() === tab.value,
+          'after:h-0': active() !== tab.value,
+        }"
+      >
+        {{ tab.text }}
+      </div>
+    </button>
+  }
+</div>

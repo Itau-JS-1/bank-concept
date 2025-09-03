@@ -10,9 +10,9 @@ import { Component, input, TemplateRef } from '@angular/core';
 export class ButtonComponent {
   // @Input() variant: 'default' | 'subtle' = 'default';
   variant = input<'default' | 'subtle'>('default');
-  ariaLabel? = input<string>();
-  leftSection = input<TemplateRef<any> | null>();
-  rightSection = input<TemplateRef<any> | null>();
+  ariaLabel = input<string>('');
+  leftSection = input<TemplateRef<any> | null>(null);
+  rightSection = input<TemplateRef<any> | null>(null);
   tooltip = input<string>('');
   className = input<string>('');
 }
