@@ -1,4 +1,14 @@
 @import "tailwindcss";
+@source inline("bg-red-500");
+@source inline("bg-green-500");
+@source inline("bg-blue-500");
+@source inline("bg-yellow-500");
+
+@plugin "daisyui";
+
+@plugin "daisyui" {
+  themes: light --prefersdark --default;
+}
 
 @theme inline {
   --color-primary: #ff6200;
@@ -9,4 +19,19 @@
   --color-bg: #ffffff;
   --color-contrast: #f5f5f5;
   --color-white: #fff;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+}
+
+input {
+  @apply w-full border-2 border-primary text-primary rounded-full placeholder:text-primary;
+}
+
+select {
+  @apply select rounded-full border-primary border-2 text-primary;
 }

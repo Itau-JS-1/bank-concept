@@ -1,0 +1,55 @@
+<!--
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>
+
+<ng-template #leftSectionTemplate>
+  <span>{{ leftSection() }}</span>
+</ng-template>
+
+<ng-template #rightSectionTemplate>
+  <span>{{ rightSection() }}</span>
+</ng-template>
+-->
+
+@switch (variant()) {
+  @case ("default") {
+    <button
+      [attr.aria-label]="ariaLabel || tooltip()"
+      [attr.data-tip]="tooltip() || null"
+      [attr.aria-describedby]="tooltip() ? 'tooltip-id' : null"
+      [ngClass]="[
+        'cursor-pointer btn py-3 px-10 h-fit min-h-11 rounded-full shadow-none border-none',
+        'text-white bg-primary hover:bg-tertiary',
+        className(),
+        tooltip(),
+      ]"
+    >
+      @if (tooltip?.()) {
+        <span id="tooltip-id" hidden>{{ tooltip() }}</span>
+      }
+      @if (leftSection?.()) {
+        <span class="mr-2">
+          <ng-container *ngTemplateOutlet="leftSection()" />
+        </span>
+      }
+      <ng-container *ngTemplateOutlet="content" />
+      @if (rightSection?.()) {
+        <span class="ml-2">
+          <ng-container *ngTemplateOutlet="rightSection()" />
+        </span>
+      }
+    </button>
+  }
+  @case ("subtle") {
+    <button>Subtle</button>
+  }
+}
+
+<!--
+ <ng-container [ngSwitch]="variant()" #container>
+  <button *ngSwitchCase="'default'">Default</button>
+  <button *ngSwitchCase="'subtle'">Subtle</button>
+  <button *ngSwitchDefault>Switch Default</button>
+</ng-container>
+-->
