@@ -1,0 +1,90 @@
+import { TransactionType } from './transactions.service';
+
+export const DEFAULT_TRANSACTION_VALUES: TransactionType[] = [
+  {
+    id: 'e09f2b2f-6d88-4dc5-adf4-852dc4617391',
+    name: 'Conserto do Carro',
+    date: new Date('01/02/2025'),
+    value: 200,
+    categoryId: 0,
+    paymentType: 'pix',
+  },
+  {
+    id: 'bb9d42a8-2672-4329-a235-d1a3df9082d1',
+    name: 'Roupas novas',
+    date: new Date('01/02/2025'),
+    value: 300,
+    categoryId: 1,
+    paymentType: 'pix',
+  },
+  {
+    id: '5c199e16-03fc-4bce-a790-c13684194ef8',
+    name: 'Tênis novo',
+    date: new Date(),
+    value: 400,
+    categoryId: 1,
+    paymentType: 'pix',
+  },
+  {
+    id: '22e43177-6693-49be-a7f6-7a94f8cfb9be',
+    name: 'Guloseimas',
+    date: new Date(),
+    value: 50,
+    categoryId: 2,
+    paymentType: 'pix',
+  },
+  {
+    id: 'e2e744f5-eb0d-4dec-b6f8-7953503f7bbc',
+    name: 'Limpeza do carro',
+    date: new Date(),
+    value: 150,
+    categoryId: 0,
+    paymentType: 'pix',
+  },
+  {
+    id: '35662eaf-44c6-4a83-b4d7-f5c16a52d0a0',
+    name: 'Camisas',
+    date: new Date(),
+    value: 200,
+    categoryId: 2,
+    paymentType: 'pix',
+  },
+  {
+    id: 'eedeb10b-05cf-49eb-910a-3bd9e1f1cc25',
+    name: 'Mercado',
+    date: new Date(),
+    value: 230,
+    categoryId: 3,
+    paymentType: 'pix',
+  },
+  {
+    id: 'b741cc16-2766-4f2e-a667-229e9e670c6c',
+    name: 'Mercado',
+    date: new Date(),
+    value: 230,
+    categoryId: 3,
+    paymentType: 'pix',
+  },
+  {
+    id: 'b495e25d-4da0-4d2a-a0d3-68e25a913097',
+    name: 'Mercado',
+    date: new Date(),
+    value: 230,
+    categoryId: 3,
+    paymentType: 'pix',
+  },
+  {
+    id: '19f26199-7990-420b-aa8f-32a2fa644f9f',
+    name: 'Mercado',
+    date: new Date(),
+    value: 230,
+    categoryId: 3,
+    paymentType: 'pix',
+  },
+];
+
+export const PAYMENT_METHODS = [
+  { name: 'PIX', value: 'pix' },
+  { name: 'Cartão de Crédito', value: 'credit-card' },
+  { name: 'Boleto', value: 'boleto' },
+];

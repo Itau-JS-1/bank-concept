@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { DEFAULT_TRANSACTION_VALUES } from '.';
 
 export type TransactionType = {
   id: string;
@@ -16,7 +17,9 @@ export type TransactionFormType = Omit<TransactionType, 'id'>;
   providedIn: 'root',
 })
 export class TransactionService {
-  private transactionsSubject = new BehaviorSubject<TransactionType[]>([]);
+  private transactionsSubject = new BehaviorSubject<TransactionType[]>(
+    DEFAULT_TRANSACTION_VALUES,
+  );
   transactions$: Observable<TransactionType[]> =
     this.transactionsSubject.asObservable();
 

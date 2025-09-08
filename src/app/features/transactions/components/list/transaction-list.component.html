@@ -1,0 +1,16 @@
+<div>
+  <div class="flex items-center justify-between mb-5">
+    <h3 class="font-bold text-xl">Transações</h3>
+    <!-- Create Transaction Button -->
+  </div>
+
+  <ul
+    class="relative flex flex-col gap-5 w-full before:absolute before:content-[''] before:left-[19px] before:my-[16px] before:h-[calc(100%-32px)] before:max-h-full before:w-[2px] before:bg-gray-200"
+  >
+    @for (transaction of transactions; track transaction.id) {
+      <li class="cursor-pointer">
+        <app-transaction-item [data]="transaction" />
+      </li>
+    }
+  </ul>
+</div>

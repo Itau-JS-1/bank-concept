@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TabsComponent } from '../../../shared/tabs/tabs.component';
+import { ExpensesTabComponent } from './tabs/expenses-tab.component';
 // import { ExpensesTabComponent } from './tabs/expenses-tab.component';
 
 @Component({
   selector: 'app-home-info-section',
-  imports: [FormsModule, CommonModule, TabsComponent],
+  imports: [FormsModule, CommonModule, TabsComponent, ExpensesTabComponent],
   templateUrl: './home-info-section.component.html',
 })
 export class HomeInfoSectionComponent {
