@@ -1,7 +1,7 @@
-<!--
 <ng-template #content>
   <ng-content></ng-content>
 </ng-template>
+<!--
 
 <ng-template #leftSectionTemplate>
   <span>{{ leftSection() }}</span>
@@ -25,16 +25,16 @@
         tooltip(),
       ]"
     >
-      @if (tooltip?.()) {
+      @if (tooltip()) {
         <span id="tooltip-id" hidden>{{ tooltip() }}</span>
       }
-      @if (leftSection?.()) {
+      @if (leftSection()) {
         <span class="mr-2">
           <ng-container *ngTemplateOutlet="leftSection()" />
         </span>
       }
-      <ng-content />
-      @if (rightSection?.()) {
+      <ng-container *ngTemplateOutlet="content" />
+      @if (rightSection()) {
         <span class="ml-2">
           <ng-container *ngTemplateOutlet="rightSection()" />
         </span>
@@ -54,16 +54,16 @@
           tooltip(),
         ]"
       >
-        @if (tooltip?.()) {
+        @if (tooltip()) {
           <span id="tooltip-id" hidden>{{ tooltip() }}</span>
         }
-        @if (leftSection?.()) {
+        @if (leftSection()) {
           <span class="mr-2">
             <ng-container *ngTemplateOutlet="leftSection()" />
           </span>
         }
-        <ng-content />
-        @if (rightSection?.()) {
+        <ng-container *ngTemplateOutlet="content" />
+        @if (rightSection()) {
           <span class="ml-2">
             <ng-container *ngTemplateOutlet="rightSection()" />
           </span>

@@ -1,0 +1,21 @@
+<div
+  class="flex flex-col w-[400px] bg-bg max-w-[80%] max-h-screen rounded-xl px-6 py-8 z-50"
+  *ngIf="isOpen$ | async"
+>
+  <div class="flex flex-row justify-between">
+    <h2 class="text-2xl font-bold">{{ title() }}</h2>
+    <div class="flex items-center gap-3">
+      <ng-container *ngTemplateOutlet="actionsTemplate()" />
+      <button
+        (click)="close()"
+        aria-label="Fechar modal"
+        class="cursor-pointer bg-transparent border-none text-black text-xl"
+      >
+        &times;
+      </button>
+    </div>
+  </div>
+  <div class="h-full pt-4">
+    <ng-content />
+  </div>
+</div>

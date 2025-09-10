@@ -4,13 +4,18 @@ import {
   TransactionService,
   TransactionType,
 } from '../../services/transactions.service';
+import { CreateTransactionButtonComponent } from '../create-transaction-button/create-transaction-button.component';
 import { TransactionItemComponent } from '../item/transaction-item.component';
 
 @Component({
   standalone: true,
   selector: 'app-transactions-list',
   templateUrl: './transaction-list.component.html',
-  imports: [TransactionItemComponent, CommonModule],
+  imports: [
+    TransactionItemComponent,
+    CommonModule,
+    CreateTransactionButtonComponent,
+  ],
 })
 export class TransactionListComponent {
   title = input('');
