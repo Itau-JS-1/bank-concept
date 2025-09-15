@@ -1,7 +1,5 @@
-<app-modal
-  title="Criar transação"
-  [name]="modalName"
-  id="create-transaction-modal"
->
-  Conteúdo
+<app-modal title="Transação" [name]="modalName" id="create-transaction-modal">
+  <app-default-transaction-form
+    (submitForm)="onSubmit($event)"
+  ></app-default-transaction-form>
 </app-modal>

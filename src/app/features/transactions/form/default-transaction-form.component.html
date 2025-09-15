@@ -1,0 +1,98 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+  <!-- Nome -->
+  <div>
+    <label class="block mb-1 text-sm">Nome</label>
+    <input
+      type="text"
+      formControlName="name"
+      class="w-full border rounded px-3 py-2"
+    />
+    <div
+      *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
+      class="text-red-500 text-sm"
+    >
+      Nome obrigatório
+    </div>
+  </div>
+
+  <!-- Valor -->
+  <div>
+    <label class="block mb-1 text-sm">Valor</label>
+    <input
+      type="number"
+      formControlName="value"
+      class="w-full border rounded px-3 py-2"
+      step="0.01"
+      min="0"
+    />
+    <div
+      *ngIf="form.get('value')?.invalid && form.get('value')?.touched"
+      class="text-red-500 text-sm"
+    >
+      Valor obrigatório
+    </div>
+  </div>
+
+  <!-- Categoria e Tipo -->
+  <div class="flex gap-4">
+    <div class="w-1/2">
+      <label class="block mb-1 text-sm">Categoria</label>
+      <select
+        formControlName="categoryId"
+        class="w-full border rounded px-3 py-2"
+      >
+        <option [value]="null" disabled>Selecione</option>
+        <option *ngFor="let c of categories$ | async" [value]="c.id">
+          {{ c.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('categoryId')?.invalid && form.get('categoryId')?.touched
+        "
+        class="text-red-500 text-sm"
+      >
+        Categoria obrigatória
+      </div>
+    </div>
+
+    <div class="w-1/2">
+      <label class="block mb-1 text-sm">Tipo</label>
+      <select
+        formControlName="paymentType"
+        class="w-full border rounded px-3 py-2"
+      >
+        <option [value]="''" disabled>Selecione</option>
+        <option *ngFor="let p of paymentMethods" [value]="p.value">
+          {{ p.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('paymentType')?.invalid && form.get('paymentType')?.touched
+        "
+        class="text-red-500 text-sm"
+      >
+        Tipo obrigatório
+      </div>
+    </div>
+  </div>
+
+  <!-- Data -->
+  <div>
+    <label class="block mb-1 text-sm">Data</label>
+    <input
+      type="date"
+      formControlName="date"
+      class="w-full border rounded px-3 py-2"
+    />
+    <div
+      *ngIf="form.get('date')?.invalid && form.get('date')?.touched"
+      class="text-red-500 text-sm"
+    >
+      Data obrigatória
+    </div>
+  </div>
+
+  <app-button className="w-full" type="submit"> Salvar </app-button>
+</form>
