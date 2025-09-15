@@ -1,0 +1,16 @@
+<ng-template #actionsTemplate>
+  <i-tabler name="trash" class="cursor-pointer btn-circle" (click)="delete()" />
+</ng-template>
+
+<app-modal
+  title="Transação"
+  [name]="modalName"
+  [actionsTemplate]="actionsTemplate"
+>
+  <ng-container *ngIf="transaction$ | async as transaction">
+    <app-default-transaction-form
+      [defaultValues]="transaction"
+      (submitForm)="onSubmit($event)"
+    />
+  </ng-container>
+</app-modal>

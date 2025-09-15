@@ -15,6 +15,7 @@ import {
   IconToolsKitchen2,
 } from 'angular-tabler-icons/icons';
 import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+import { ModalName, ModalsService } from '../../../../services/modals.service';
 import { FormatDatePipe } from '../../../../shared/utils/format-date.pipe';
 import {
   CategoriesService,
@@ -44,7 +45,10 @@ export class TransactionItemComponent implements OnInit, OnDestroy, OnChanges {
   private data$ = new BehaviorSubject<TransactionType | null>(null);
   private subscription: Subscription = new Subscription();
 
-  constructor(private categoriesService: CategoriesService) {}
+  constructor(
+    private categoriesService: CategoriesService,
+    private modalsService: ModalsService,
+  ) {}
 
   ngOnInit(): void {
     this.subscription = combineLatest([
@@ -70,6 +74,6 @@ export class TransactionItemComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   openUpdateTransactionModal(dataId: string) {
-    console.log('Update:', dataId);
+    this.modalsService.openUpdate(ModalName.UPDATE_TRANSACTION, dataId);
   }
 }
