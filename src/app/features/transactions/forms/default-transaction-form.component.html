@@ -1,5 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
-  <!-- Nome -->
+
   <div>
     <label class="block mb-1 text-sm">Nome</label>
     <input
@@ -7,32 +7,29 @@
       formControlName="name"
       class="w-full border rounded px-3 py-2"
     />
-    <div
-      *ngIf="form.get('name')?.invalid && form.get('name')?.touched"
-      class="text-red-500 tex-sm"
-    >
-      Nome obrigatório
-    </div>
+    @if (form.get('name')?.invalid && form.get('name')?.touched) {
+      <div class="text-red-500 text-sm">
+        Nome obrigatório
+      </div>
+    }
   </div>
 
-  <!-- Valor -->
   <div>
     <label class="block mb-1 text-sm">Valor</label>
     <input
-      type="text"
+      type="number"
       formControlName="value"
       class="w-full border rounded px-3 py-2"
     />
-    <div
-      *ngIf="form.get('value')?.invalid && form.get('value')?.touched"
-      class="text-red-500 tex-sm"
-    >
-      Valor obrigatório
-    </div>
+    @if (form.get('value')?.invalid && form.get('value')?.touched) {
+      <div class="text-red-500 text-sm">
+        Valor obrigatório
+      </div>
+    }
   </div>
 
   <div class="flex gap-4">
-    <!-- Categoria -->
+
     <div class="w-1/2">
       <label class="block mb-1 text-sm">Categoria</label>
       <select
@@ -40,45 +37,41 @@
         formControlName="categoryId"
       >
         <option [value]="null" disabled>Selecione</option>
-        <option *ngFor="let c of categories$ | async" [value]="c.id">
-          {{ c.name }}
-        </option>
+
+        @for (c of categories$ | async; track c.id) {
+          <option [value]="c.id">
+            {{ c.name }}
+          </option>
+        }
       </select>
-      <div
-        *ngIf="
-          form.get('categoryId')?.invalid && form.get('categoryId')?.touched
-        "
-        class="text-red-500 text-sm"
-      >
-        Categoria obrigatória
-      </div>
+      @if (form.get('categoryId')?.invalid && form.get('categoryId')?.touched) {
+        <div class="text-red-500 text-sm">
+          Categoria obrigatória
+        </div>
+      }
     </div>
 
-    <!-- Tipo de pagamento -->
     <div class="w-1/2">
       <label class="block mb-1 text-sm">Tipo</label>
       <select
         class="w-full border rounded px-3 py-2"
         formControlName="paymentType"
       >
-        <option [value]="''" disabled>Selecione</option>
-        <option *ngFor="let p of paymentMethods" [value]="p.value">
-          {{ p.name }}
-        </option>
+        <option [value]="null" disabled>Selecione</option>
+
+        @for (p of paymentMethods; track $index) {
+          <option [value]="p.value">{{ p.name }}</option>
+        }
       </select>
-      <div
-        *ngIf="
-          form.get('paymentMethods')?.invalid &&
-          form.get('paymentMethods')?.touched
-        "
-        class="text-red-500 text-sm"
-      >
-        Tipo obrigatório
-      </div>
+
+      @if (form.get('paymentType')?.invalid && form.get('paymentType')?.touched) {
+        <div class="text-red-500 text-sm">
+          Tipo obrigatório
+        </div>
+      }
     </div>
   </div>
 
-  <!-- Data -->
   <div>
     <label class="block mb-1 text-sm">Data</label>
     <input
@@ -86,13 +79,17 @@
       formControlName="date"
       class="w-full border rounded px-3 py-2"
     />
-    <div
-      *ngIf="form.get('date')?.invalid && form.get('date')?.touched"
-      class="text-red-500 tex-sm"
-    >
-      Data obrigatória
-    </div>
+    @if (form.get('date')?.invalid && form.get('date')?.touched) {
+      <div class="text-red-500 text-sm">
+        Data obrigatória
+      </div>
+    }
   </div>
 
-  <app-button className="w-full" type="submit">Salvar</app-button>
+  <app-button
+    className="w-full"
+    type="submit"
+  >
+    Salvar
+  </app-button>
 </form>

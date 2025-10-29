@@ -1,9 +1,8 @@
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { provideTablerIcons, TablerIconComponent } from 'angular-tabler-icons';
 import { IconTrash } from 'angular-tabler-icons/icons';
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { map, switchMap, Observable, Subscription } from 'rxjs';
 import { ModalName, ModalsService } from '../../../../services/modals.service';
 import { ModalsComponent } from '../../../../shared/modals/modal/modal.component';
 import { dateFromLocalString } from '../../../../shared/utils/dates';
@@ -22,7 +21,6 @@ import {
     CommonModule,
     ModalsComponent,
     DefaultTransactionFormComponent,
-    FormsModule,
   ],
   templateUrl: './update-transaction-modal.component.html',
   providers: [
@@ -31,23 +29,34 @@ import {
     }),
   ],
 })
-export class UpdateTransactionModalComponent {
-  modalName: ModalName = ModalName.UPDATE_TRANSACTION;
-  isOpen$;
+export class UpdateTransactionModalComponent implements OnDestroy {
+  // Injeções
+  private modalsService = inject(ModalsService);
+  private transactionService = inject(TransactionService);
 
-  transaction$!: Observable<TransactionType | undefined>;
-  dataId!: string | number | null;
+  readonly modalName: ModalName = ModalName.UPDATE_TRANSACTION;
 
-  constructor(
-    private modalsService: ModalsService,
-    private transactionService: TransactionService,
-  ) {
-    this.transaction$ = this.modalsService.getModal(this.modalName).pipe(
-      map((modal) => modal?.dataId ?? null),
-      tap((id) => (this.dataId = id)),
+  public transaction$!: Observable<TransactionType | undefined>;
+
+  public isOpen$!: Observable<boolean>;
+
+  private currentDataId: string | null = null;
+
+  private dataIdSubscription: Subscription;
+
+  constructor() {
+    const modalId$ = this.modalsService.getModal(this.modalName).pipe(
+      map((modal) => modal?.dataId?.toString() ?? null)
+    );
+
+    this.dataIdSubscription = modalId$.subscribe(id => {
+      this.currentDataId = id;
+    });
+
+    this.transaction$ = modalId$.pipe(
       switchMap((id) =>
         this.transactionService.transactions$.pipe(
-          map((transactions) => transactions.find((t) => t.id === id)),
+          map((transactions) => (id ? transactions.find((t) => t.id === id) : undefined)),
         ),
       ),
     );
@@ -57,24 +66,32 @@ export class UpdateTransactionModalComponent {
       .pipe(map((modal) => modal?.open ?? false));
   }
 
-  onSubmit(data: TransactionFormType) {
-    if (this.dataId) {
+  ngOnDestroy(): void {
+    this.dataIdSubscription.unsubscribe();
+  }
+
+  onSubmit(data: TransactionFormType): void {
+    if (this.currentDataId) {
       this.transactionService.update(
         {
           ...data,
           categoryId: Number(data.categoryId),
           date: dateFromLocalString(data.date as any),
         },
-        this.dataId.toString(),
+        this.currentDataId,
       );
       this.modalsService.close(this.modalName);
     }
   }
 
-  delete() {
-    if (this.dataId) {
-      this.transactionService.delete(this.dataId.toString());
+  delete(): void {
+    if (this.currentDataId) {
+      this.transactionService.delete(this.currentDataId);
       this.modalsService.close(this.modalName);
     }
+  }
+
+  onClose(): void {
+    this.modalsService.close(this.modalName);
   }
 }

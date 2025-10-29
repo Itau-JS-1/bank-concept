@@ -1,6 +1,7 @@
+import { Component, inject, input, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, input, TemplateRef } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { map, Observable, switchMap } from 'rxjs';
 import { ModalName, ModalsService } from '../../../services/modals.service';
 
 @Component({
@@ -10,18 +11,21 @@ import { ModalName, ModalsService } from '../../../services/modals.service';
   templateUrl: './modal.component.html',
 })
 export class ModalsComponent {
-  name = input<ModalName>(ModalName.CREATE_TRANSACTION);
+  private modalsService = inject(ModalsService);
+
+  name = input.required<ModalName>({ alias: 'name' });
   title = input<string>();
   actionsTemplate = input<TemplateRef<any> | null>(null);
 
-  isOpen$!: Observable<boolean>;
+  public isOpen$!: Observable<boolean>;
 
-  constructor(private modalsService: ModalsService) {}
+  constructor() {
+    const name$ = toObservable(this.name);
 
-  ngOnInit() {
-    this.isOpen$ = this.modalsService
-      .getModal(this.name())
-      .pipe(map((modal) => modal?.open ?? false));
+    this.isOpen$ = name$.pipe(
+      switchMap((modalName) => this.modalsService.getModal(modalName)),
+      map((modal) => modal?.open ?? false)
+    );
   }
 
   close() {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { TransactionType } from '../features/transactions/services/transactions.service';
+import { map } from 'rxjs/operators';
 
 export enum ModalName {
   CREATE_TRANSACTION,
@@ -34,7 +35,7 @@ const DEFAULT_MODALS: ModalProps[] = [
 })
 export class ModalsService {
   private modalsSubject = new BehaviorSubject<ModalProps[]>(DEFAULT_MODALS);
-  modals$ = this.modalsSubject.asObservable();
+  modals$: Observable<ModalProps[]> = this.modalsSubject.asObservable();
 
   private updateModals(newModals: ModalProps[]) {
     this.modalsSubject.next(newModals);
@@ -56,7 +57,7 @@ export class ModalsService {
     const newModals = this.modalsSubject
       .getValue()
       .map((modal) =>
-        modal.name === name ? { ...modal, open: false } : modal,
+        modal.name === name ? { ...modal, open: false, dataId: null } : modal,
       );
 
     this.updateModals(newModals);

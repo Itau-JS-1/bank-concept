@@ -1,29 +1,11 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Component, EventEmitter, inject, Input, OnChanges, Output, SimpleChanges, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../../shared/button/button.component';
-import {
-  CategoriesService,
-  CategoryType,
-} from '../../categories/services/categories.service';
+import { CategoriesService, CategoryType } from '../../categories/services/categories.service';
+import { TransactionFormType, TransactionType } from '../services/transactions.service';
+import { Observable } from 'rxjs';
 import { PAYMENT_METHODS } from '../services';
-import {
-  TransactionFormType,
-  TransactionType,
-} from '../services/transactions.service';
 
 @Component({
   selector: 'app-default-transaction-form',
@@ -31,7 +13,10 @@ import {
   templateUrl: './default-transaction-form.component.html',
   imports: [CommonModule, ReactiveFormsModule, ButtonComponent],
 })
-export class DefaultTransactionFormComponent implements OnChanges {
+export class DefaultTransactionFormComponent implements OnInit, OnChanges {
+  private fb = inject(FormBuilder);
+  private categoriesService = inject(CategoriesService);
+
   @Input() defaultValues?: TransactionType;
   @Output() submitForm = new EventEmitter<TransactionFormType>();
 
@@ -39,32 +24,32 @@ export class DefaultTransactionFormComponent implements OnChanges {
   categories$!: Observable<CategoryType[]>;
   paymentMethods = PAYMENT_METHODS;
 
-  constructor(
-    private fb: FormBuilder,
-    private categoriesService: CategoriesService,
-  ) {}
-
   ngOnInit() {
     this.categories$ = this.categoriesService.categories$;
 
     this.form = this.fb.group({
-      name: [this.defaultValues?.name, Validators.required],
-      value: [this.defaultValues?.value, Validators.min(0.01)],
-      categoryId: [this.defaultValues?.categoryId, Validators.required],
-      paymentType: [this.defaultValues?.paymentType, Validators.required],
-      date: [
-        new Date(this.defaultValues?.date || new Date())
-          .toISOString()
-          .substring(0, 10),
-      ],
+      name: [this.defaultValues?.name || '', Validators.required],
+      value: [this.defaultValues?.value || null, Validators.min(0.01)],
+      categoryId: [this.defaultValues?.categoryId || null, Validators.required],
+      paymentType: [this.defaultValues?.paymentType || null, Validators.required],
+      date: [this.formatDate(this.defaultValues?.date), Validators.required],
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['defaultValues'] && this.form) {
       const v = changes['defaultValues'].currentValue as TransactionType;
-      if (v) this.patchForm(v);
+      if (v) {
+        this.patchForm(v);
+      } else if (changes['defaultValues'].firstChange === false) {
+        this.form.reset();
+      }
     }
+  }
+
+  private formatDate(date: Date | undefined): string {
+    const d = date ? new Date(date) : new Date();
+    return d.toISOString().substring(0, 10);
   }
 
   private patchForm(v: TransactionType) {
@@ -73,14 +58,15 @@ export class DefaultTransactionFormComponent implements OnChanges {
       value: v.value,
       categoryId: v.categoryId,
       paymentType: v.paymentType,
-      date: new Date(v.date).toISOString().substring(0, 10),
+      date: this.formatDate(v.date),
     });
-    console.log('[Form patch]', v);
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    console.log(this.form.value);
+
     this.submitForm.emit(this.form.value);
     this.form.reset();
   }
 }
+

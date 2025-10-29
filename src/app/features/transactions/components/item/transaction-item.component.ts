@@ -1,20 +1,6 @@
-import { CommonModule } from '@angular/common';
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { provideTablerIcons, TablerIconComponent } from 'angular-tabler-icons';
-import {
-  IconCar,
-  IconShirt,
-  IconShoppingCart,
-  IconToolsKitchen2,
-} from 'angular-tabler-icons/icons';
-import { BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, map, Observable } from 'rxjs'; // 👈 Removemos 'Subscription' e 'OnDestroy' não mais necessários
 import { ModalName, ModalsService } from '../../../../services/modals.service';
 import { FormatDatePipe } from '../../../../shared/utils/format-date.pipe';
 import {
@@ -22,6 +8,8 @@ import {
   CategoryType,
 } from '../../../categories/services/categories.service';
 import { TransactionType } from '../../services/transactions.service';
+import { CommonModule } from '@angular/common';
+import { IconCar, IconShirt, IconShoppingCart, IconToolsKitchen2 } from 'angular-tabler-icons/icons';
 
 @Component({
   standalone: true,
@@ -37,40 +25,30 @@ import { TransactionType } from '../../services/transactions.service';
     }),
   ],
 })
-export class TransactionItemComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() data!: TransactionType;
+export class TransactionItemComponent {
+  private categoriesService = inject(CategoriesService);
+  private modalsService = inject(ModalsService);
 
-  category: CategoryType | undefined;
+  public dataSubject = new BehaviorSubject<TransactionType | null>(null);
 
-  private data$ = new BehaviorSubject<TransactionType | null>(null);
-  private subscription: Subscription = new Subscription();
+  @Input()
+  set data(transaction: TransactionType) {
+    this.dataSubject.next(transaction);
+  }
 
-  constructor(
-    private categoriesService: CategoriesService,
-    private modalsService: ModalsService,
-  ) {}
+  public category$: Observable<CategoryType | undefined>;
 
-  ngOnInit(): void {
-    this.subscription = combineLatest([
+  constructor() {
+    this.category$ = combineLatest([
       this.categoriesService.categories$,
-      this.data$.asObservable(),
-    ]).subscribe(([categories, data]) => {
-      if (data) {
-        this.category = categories.find((c) => c.id === data.categoryId);
-      }
-    });
-
-    if (this.data) {
-      this.data$.next(this.data);
-    }
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['data'] && this.data) {
-      this.data$.next(this.data);
-    }
-  }
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+      this.dataSubject.pipe(
+        filter((data): data is TransactionType => data !== null)
+      ),
+    ]).pipe(
+      map(([categories, data]) => {
+        return categories.find((c) => c.id === data.categoryId);
+      })
+    );
   }
 
   openUpdateTransactionModal(dataId: string) {

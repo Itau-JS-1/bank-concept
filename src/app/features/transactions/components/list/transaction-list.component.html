@@ -4,13 +4,23 @@
     <app-create-transaction-button />
   </div>
 
-  <ul
-    class="relative flex flex-col gap-5 w-full before:absolute before:content-[''] before:left-[19px] before:my-[16px] before:h-[calc(100%-32px)] before:max-h-full before:w-[2px] before:bg-gray-200"
-  >
-    @for (transaction of transactions; track transaction.id) {
-      <li class="cursor-pointer">
-        <app-transaction-item [data]="transaction" />
-      </li>
-    }
-  </ul>
+  <ng-container *ngIf="transactions$ | async as transactions">
+
+    <ul
+      class="relative flex flex-col gap-5 w-full before:absolute before:content-[''] before:left-[19px] before:my-[16px] before:h-[calc(100%-32px)] before:max-h-full before:w-[2px] before:bg-gray-200"
+    >
+      @for (transaction of transactions; track transaction.id) {
+        <li class="cursor-pointer">
+          <app-transaction-item [data]="transaction" />
+        </li>
+      }
+
+      @empty {
+        <div class="text-center py-6 text-gray-500 w-full">
+          Nenhuma transação registrada.
+        </div>
+      }
+    </ul>
+
+  </ng-container>
 </div>

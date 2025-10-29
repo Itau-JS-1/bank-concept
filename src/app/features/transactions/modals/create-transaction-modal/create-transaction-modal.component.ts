@@ -1,6 +1,6 @@
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ModalName, ModalsService } from '../../../../services/modals.service';
 import { ModalsComponent } from '../../../../shared/modals/modal/modal.component';
 import { dateFromLocalString } from '../../../../shared/utils/dates';
@@ -17,19 +17,21 @@ import {
   templateUrl: './create-transaction-modal.component.html',
 })
 export class CreateTransactionModalComponent {
-  modalName: ModalName = ModalName.CREATE_TRANSACTION;
-  isOpen$;
+  private modalsService = inject(ModalsService);
+  private transactionService = inject(TransactionService);
 
-  constructor(
-    private modalsService: ModalsService,
-    private transactionService: TransactionService,
-  ) {
+  readonly modalName: ModalName = ModalName.CREATE_TRANSACTION;
+
+  public isOpen$: Observable<boolean>;
+
+  constructor() {
     this.isOpen$ = this.modalsService
       .getModal(this.modalName)
-      .pipe(map((modal) => modal?.open ?? false));
+      .pipe(
+        map((modal) => modal?.open ?? false)
+      );
   }
-
-  onSubmit(data: TransactionFormType) {
+  onSubmit(data: TransactionFormType): void {
     console.log(data);
     this.transactionService.create({
       ...data,
@@ -37,6 +39,9 @@ export class CreateTransactionModalComponent {
       date: dateFromLocalString(data.date as any),
     });
 
+    this.modalsService.close(this.modalName);
+  }
+  onClose(): void {
     this.modalsService.close(this.modalName);
   }
 }

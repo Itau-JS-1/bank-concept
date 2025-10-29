@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, input, inject, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import {
   TransactionService,
   TransactionType,
@@ -17,16 +18,14 @@ import { TransactionItemComponent } from '../item/transaction-item.component';
     CreateTransactionButtonComponent,
   ],
 })
-export class TransactionListComponent {
+export class TransactionListComponent implements OnInit {
+  private transactionsService = inject(TransactionService);
+
   title = input('');
 
-  transactions: TransactionType[] = [];
-
-  constructor(private transactionsService: TransactionService) {}
+  public transactions$!: Observable<TransactionType[]>;
 
   ngOnInit() {
-    this.transactionsService.transactions$.subscribe(
-      (t) => (this.transactions = t),
-    );
+    this.transactions$ = this.transactionsService.transactions$;
   }
 }

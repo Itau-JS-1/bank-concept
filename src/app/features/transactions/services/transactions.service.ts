@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { DEFAULT_TRANSACTION_VALUES } from '.';
 
 export type TransactionType = {
@@ -20,6 +20,7 @@ export class TransactionService {
   private transactionsSubject = new BehaviorSubject<TransactionType[]>(
     DEFAULT_TRANSACTION_VALUES,
   );
+
   transactions$: Observable<TransactionType[]> =
     this.transactionsSubject.asObservable();
 
@@ -28,30 +29,33 @@ export class TransactionService {
   }
 
   create(values: TransactionFormType): void {
-    const current = this.transactionsSubject.getValue();
+    const current = this.transactions;
     this.transactionsSubject.next([
       ...current,
       { id: this.generateUUID(), ...values },
     ]);
-    // TODO: toast
   }
 
   update(values: TransactionFormType, id: TransactionType['id']): void {
-    const current = this.transactionsSubject.getValue();
+    const current = this.transactions;
     const updated = current.map((t) => (t.id === id ? { id, ...values } : t));
     this.transactionsSubject.next(updated);
-    // TODO: toast
   }
 
   delete(id: TransactionType['id']): void {
-    const current = this.transactionsSubject.getValue();
+    const current = this.transactions;
     const filtered = current.filter((t) => t.id !== id);
     this.transactionsSubject.next(filtered);
-    // TODO: toast
+  }
+
+  getById$(id: TransactionType['id']): Observable<TransactionType | undefined> {
+    return this.transactions$.pipe(
+      map(transactions => transactions.find((t) => t.id === id))
+    );
   }
 
   getById(id: TransactionType['id']): TransactionType | undefined {
-    return this.transactionsSubject.getValue().find((t) => t.id === id);
+    return this.transactions.find((t) => t.id === id);
   }
 
   generateUUID(): string {

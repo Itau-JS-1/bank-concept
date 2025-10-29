@@ -1,26 +1,31 @@
-<div
-  class="relative flex flex-row flex-wrap w-full items-center justify-between"
-  (click)="openUpdateTransactionModal(data.id)"
->
-  <div class="absolute left-0 w-[50px] h-full flex items-center">
+<ng-container *ngIf="dataSubject | async as data">
+  <ng-container *ngIf="category$ | async as category">
     <div
-      class="flex flex-row items-center justify-center w-[40px] h-[40px] rounded-full"
-      [ngClass]="`bg-${category?.color}-500`"
+      class="relative flex flex-row flex-wrap w-full items-center justify-between cursor-pointer"
+      (click)="openUpdateTransactionModal(data.id)"
     >
-      <div class="w-[24px] h-[24px] text-white">
-        <i-tabler
-          [name]="category?.icon || 'shopping-cart'"
-          class="w-6 h-6 text-white"
-        />
+      <div class="absolute left-0 w-[50px] h-full flex items-center">
+        <div
+          class="flex flex-row items-center justify-center w-[40px] h-[40px] rounded-full"
+          [ngClass]="'bg-' + (category?.color || 'gray') + '-500'"
+        >
+          <div class="w-[24px] h-[24px] text-white">
+            <i-tabler
+              [name]="category?.icon || 'shopping-cart'"
+              class="w-6 h-6 text-white"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="pl-[60px]">
+        <span class="font-medium text-sm">{{ category?.name }}</span>
+
+        <h3 class="font-medium my-0">
+          {{ data.name || "Sem nome" }}
+        </h3>
+        <span class="text-xs">{{ data.date | formatDate }}</span>
       </div>
     </div>
-  </div>
-
-  <div class="pl-[60px]">
-    <span class="font-medium text-sm">{{ category?.name }}</span>
-    <h3 class="font-medium my-0">
-      {{ data.name || "Sem nome" }}
-    </h3>
-    <span class="text-xs">{{ data.date | formatDate }}</span>
-  </div>
-</div>
+  </ng-container>
+</ng-container>

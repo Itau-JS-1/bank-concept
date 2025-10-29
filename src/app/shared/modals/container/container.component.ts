@@ -1,6 +1,6 @@
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { CreateTransactionModalComponent } from '../../../features/transactions/modals/create-transaction-modal/create-transaction-modal.component';
 import { UpdateTransactionModalComponent } from '../../../features/transactions/modals/update-transaction-modal/update-transaction-modal.component';
 import { ModalProps, ModalsService } from '../../../services/modals.service';
@@ -15,21 +15,16 @@ import { ModalProps, ModalsService } from '../../../services/modals.service';
   ],
   templateUrl: './container.component.html',
 })
-export class ModalsContainerComponent {
-  modals$!: Observable<ModalProps[]>;
-  private modals: ModalProps[] = [];
+export class ModalsContainerComponent implements OnInit {
+  private modalsService = inject(ModalsService);
 
-  constructor(private modalsService: ModalsService) {}
+  public modals$!: Observable<ModalProps[]>;
 
   ngOnInit() {
     this.modals$ = this.modalsService.modals$;
-
-    this.modals$.subscribe((modals) => {
-      this.modals = modals;
-    });
   }
 
-  isAnyModalOpen(): boolean {
-    return this.modals.some((m) => m.open);
-  }
+  public isAnyModalOpen$: Observable<boolean> = this.modalsService.modals$.pipe(
+    map((modals) => modals.some((m) => m.open))
+  );
 }
